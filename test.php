@@ -40,7 +40,7 @@ function reqq($url,$data,$ua,$bduss){
 		return $data222;
 	}
 	
-	
+	return "Er";
 	}
 	
 }
