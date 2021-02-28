@@ -23,7 +23,7 @@ function reqq($url,$data,$ua,$bduss){
 	$num = count($bduss);
 	for($i=0;$i<$num;$i++){
 	$curl = curl_init();
-	curl_setopt($curl, CURLOPT_URL, $url."&devuid=O|".md5($bduss[$i]));
+	curl_setopt($curl, CURLOPT_URL, $url."&devuid=O|".md5($bduss[$i])."&origin=dlna");//&origin=dlna 无需Range头即可下载
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
