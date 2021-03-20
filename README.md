@@ -1,7 +1,7 @@
 # Fix-Pandownload-login
-##网页版   
+## 网页版   
 https://github.com/Admirepowered/pandownload-cloud    
-## 修复版   
+## 使用方法   
 仅修复登录，下载随缘    
 使用方法:   
 打开https://github.com/Admirepowered/Fix-Pandownload-login/releases  下载最新版    
