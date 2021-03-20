@@ -8,6 +8,6 @@ https://github.com/Admirepowered/pandownload-cloud
 [加入 Telegram 交流群](https://t.me/fixpd)   
 [加入 Telegram 通知频道](https://t.me/fixpds)   
 ## Thanks For
-~~https://github.com/TkzcM/pandownload-login  ~~    
+~~https://github.com/TkzcM/pandownload-login~~    
 
 https://github.com/Womsxd/pandownload.com_Pages_Backup  
