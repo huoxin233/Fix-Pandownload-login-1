@@ -143,7 +143,7 @@ if($a=="request"){
 				$meage=array(
 				'code'=> 406,
 				'messgae'=> '流量不足,剩余流量:'.$remain,
-				'inpu'=> '流量不足,剩余流量:'.$remain.'请重新输入或者下载小文件'
+				'inpu'=> '流量不足,剩余流量:'.$remain.'，请重新输入key或者下载小文件'
 				);
 				echo json_encode($meage);
 				exit ;
