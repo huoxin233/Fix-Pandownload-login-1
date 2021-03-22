@@ -130,11 +130,20 @@ if($a=="request"){
 			$size1=(int)$size;
 			$size1=$size1/1048576;
 			$tt= (int)$row['time']-$size1;
+			$now=(int)$row['time'];
+			if($now < 1024){
+				$remain = (string)$now."MB";
+			}
+			else{
+				$remain = (string)($now/1024)."GB";
+				
+			}
 			if($tt<0){
 				
 				$meage=array(
-				'code'=> 405,
-				'messgae'=> '流量不足',
+				'code'=> 406,
+				'messgae'=> '流量不足,剩余流量:'.$remain,
+				'inpu'=> '流量不足,剩余流量:'.$remain
 				);
 				echo json_encode($meage);
 				exit ;
@@ -161,7 +170,8 @@ if($a=="request"){
 	}
 	$meage=array(
 		'code'=> 404,
-		'messgae'=> 'User not found'
+		'messgae'=> 'User not found',
+		'inpu'=> 'key过期或错误，重新输入'
 	);
 	echo json_encode($meage);
 	exit ;
