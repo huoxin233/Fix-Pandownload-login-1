@@ -2,9 +2,10 @@
 $set=0;//设置公告是否开启 1开启 0关闭
 $gg="测试公告";//测试公告
 $passkey="sswordnedd";//为了防止注入这里限制到了10位
+$mode=1;//0为次数模式 1为流量模式 (单位MB)
+
+
 $vip_bduss = array("GNHQmtSSHJ6NW9lVVJ2RUdMVnl5NG9VdHEzRTRaOWlUMmFnRERleTZSbTR2ZkpmSUFBQUFBJCQAAAAAAAAAAAEAAABXLSO7uvC68LbuMzQ5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALgwy1-4MMtfN","SVIP2","SVIP3");
-
-
 //$ua1="netdisk;P2SP;2.2.60.26";
 //$ua1="netdisk;2.2.51.6;netdisk;10.0.63;PC;android-android;QTP/1.0.32.2";
 $ua1="netdisk;P2SP;3.0.0.3;netdisk;11.5.3;PC;PC-Windows;android-android;11.0;JSbridge4.4.0";
@@ -17,6 +18,15 @@ class MyDB extends SQLite3
 		$this->open('user111.db');//这里最好自己改下
 	}
 }
+
+function getSubstr($str, $leftStr, $rightStr)
+{
+$left = strpos($str, $leftStr);
+$right = strpos($str, $rightStr,$left);
+if($left < 0 or $right < $left) return '';
+return substr($str, $left + strlen($leftStr), $right-$left-strlen($leftStr));
+}
+
 function reqq($url,$data,$ua,$bduss){
 	
 	//strpos($ret, '31045')!==false || strpos($ret, 'qdall01')!==false
@@ -59,7 +69,7 @@ if($a=="isok"){
 }
 if($a=="regist"){
 	$user=$_GET['code'];
-	$time=$_GET['time'];
+	$time=$_GET['time'];//mode=0 时 是解析次数 ，mode=1 时 为流量大小(MB)
 	$pass=$_GET['pass'];
 	if(strlen($user) > 8 || strlen($passkey)>10 || $passkey!=$pass){
 		
@@ -110,9 +120,38 @@ if($a=="request"){
 			echo json_encode($meage);
 			exit ;
 		}
+		$mm = $ret1;
 		$ret1=base64_encode($ret1);
-		//echo $ret1;
-		$tt= (int)$row['time']-1;
+		if ($mode==0){
+			$tt= (int)$row['time']-1;
+		}
+		elseif ($mode==1){
+			$size=getSubstr($mm,"&size=","&");
+			$size1=(int)$size;
+			$size1=$size1/1048576;
+			$tt= (int)$row['time']-$size1;
+			$now=(int)$row['time'];
+			if($now < 1024){
+				$remain = (string)$now."MB";
+			}
+			else{
+				$remain = (string)($now/1024)."GB";
+				
+			}
+			if($tt<0){
+				
+				$meage=array(
+				'code'=> 406,
+				'messgae'=> '流量不足,剩余流量:'.$remain,
+				'inpu'=> '流量不足,剩余流量:'.$remain.'，请重新输入key或者下载小文件'
+				);
+				echo json_encode($meage);
+				exit ;
+				
+			}
+		}
+
+		
 		if($tt==0 || $tt <0){
 			$ret = $db->exec('DELETE FROM user WHERE code="'.$user.'";');
 		}
@@ -131,7 +170,8 @@ if($a=="request"){
 	}
 	$meage=array(
 		'code'=> 404,
-		'messgae'=> 'User not found'
+		'messgae'=> 'User not found',
+		'inpu'=> 'key过期或错误，重新输入'
 	);
 	echo json_encode($meage);
 	exit ;
